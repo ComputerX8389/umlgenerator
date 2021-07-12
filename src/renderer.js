@@ -5,18 +5,6 @@
 // selectively enable features needed in the rendering
 // process.
 
-//const go = window.api.go;
-//console.log(window.api.fs);
-
-//const testFolder = "C:\\Users\\STEFF\\Documents\\Repos\\Forza";
-//const fs = window.api.fs;
-//
-//fs.readdir(testFolder, (err, files) => {
-//    files.forEach((file) => {
-//        console.log(file);
-//    });
-//});
-
 var diagram = new go.Diagram("Diagram");
 diagram.model = new go.GraphLinksModel(
     [
