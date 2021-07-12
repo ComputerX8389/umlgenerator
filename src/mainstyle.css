@@ -1,0 +1,9 @@
+* {
+  background-color: white;
+}
+
+#Diagram {
+  border: solid 1px blue;
+  width: 400px;
+  height: 150px;
+}
