@@ -1,0 +1,37 @@
+const fs = require("fs");
+const fsPromises = fs.promises;
+const pathLib = require("path");
+
+async function GetFileTree(path) {
+    const data = await ScanDir(path);
+    return { type: "folder", name: "root", files: data };
+}
+
+async function ScanDir(path) {
+    console.log("Scanning", path);
+
+    const output = [];
+    const everything = await fsPromises.readdir(path, { withFileTypes: true });
+
+    for (let i = 0; i < everything.length; i++) {
+        const file = everything[i];
+
+        if (file.isDirectory()) {
+            const newpath = pathLib.join(path, file.name);
+            const next = await ScanDir(newpath);
+            output.push({ type: "folder", name: file.name, files: next });
+        } else {
+            output.push({
+                type: "file",
+                name: file.name,
+                fullname: pathLib.join(path, file.name),
+            });
+        }
+    }
+
+    return output;
+}
+
+module.exports = {
+    GetFileTree,
+};
