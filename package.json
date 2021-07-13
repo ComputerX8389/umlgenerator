@@ -19,7 +19,5 @@
   "devDependencies": {
     "electron": "^13.1.5"
   },
-  "dependencies": {
-    "gojs": "^2.1.45"
-  }
+  "dependencies": {}
 }

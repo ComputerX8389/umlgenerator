@@ -4,11 +4,22 @@
 // `nodeIntegration` is turned off. Use `preload.js` to
 // selectively enable features needed in the rendering
 // process.
+const diagram = new go.Diagram("Diagram");
+const $ = go.GraphObject.make;
+
 const scanner = window.api.scanner;
 const PathTxt = document.getElementById("PathTxt");
-let path = "C:\\Users\\STEFF\\Desktop\\forzasite";
+const ScanBtn = document.getElementById("ScanBtn");
 
-PathTxt.appendChild(document.createTextNode(path));
+ScanBtn.addEventListener("click", StartScan);
+
+async function StartScan() {
+    const data = await scanner.GetUML(PathTxt.value);
+
+    setupTree(data);
+    // automatic tree layout
+    diagram.layout = $(go.TreeLayout, { angle: 0 });
+}
 
 function setupTree(nodeDataArray) {
     diagram.nodeTemplate = $(
@@ -21,31 +32,8 @@ function setupTree(nodeDataArray) {
     diagram.linkTemplate = $(
         go.Link,
         { routing: go.Link.Orthogonal, corner: 5 },
-        $(go.Shape)
+        $(go.Shape, { stroke: "lightgray" })
     );
 
     diagram.model = new go.TreeModel(nodeDataArray);
 }
-
-async function getdata() {
-    const data = await scanner.GetUML(path);
-
-    setupTree(data);
-    // automatic tree layout
-    diagram.layout = $(go.TreeLayout, { angle: 0 });
-}
-
-// Diagram setup
-const diagram = new go.Diagram("Diagram");
-const $ = go.GraphObject.make;
-
-getdata();
-
-//var diagram = new go.Diagram("Diagram");
-//diagram.model = new go.GraphLinksModel(
-//    [
-//        { key: "Hello" }, // two node data, in an Array
-//        { key: "World!" },
-//    ],
-//    [{ from: "Hello", to: "World!" }] // one link data, in an Array
-//);
