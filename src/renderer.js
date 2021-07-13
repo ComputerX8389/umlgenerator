@@ -5,12 +5,16 @@
 // selectively enable features needed in the rendering
 // process.
 const scanner = window.api.scanner;
+const PathTxt = document.getElementById("PathTxt");
+let path = "C:\\Users\\STEFF\\Desktop\\forzasite";
+
+PathTxt.appendChild(document.createTextNode(path));
 
 function setupTree(nodeDataArray) {
     diagram.nodeTemplate = $(
         go.Node,
         "Auto",
-        $(go.Shape, "Ellipse", { fill: "white" }),
+        $(go.Shape, "RoundedRectangle", new go.Binding("fill", "fill")),
         $(go.TextBlock, new go.Binding("text", "key"))
     );
 
@@ -24,12 +28,11 @@ function setupTree(nodeDataArray) {
 }
 
 async function getdata() {
-    const data = await scanner.GetUML("C:\\Users\\STEFF\\Desktop\\forzasite");
-    console.log(data);
+    const data = await scanner.GetUML(path);
 
     setupTree(data);
     // automatic tree layout
-    diagram.layout = $(go.TreeLayout);
+    diagram.layout = $(go.TreeLayout, { angle: 0 });
 }
 
 // Diagram setup

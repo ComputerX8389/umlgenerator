@@ -3,13 +3,16 @@ const fsPromises = fs.promises;
 const pathLib = require("path");
 
 async function GetFileTree(path) {
+    console.log("Scanning files in", path);
+
     const data = await ScanDir(path);
+
+    console.log("Found", data);
+
     return { type: "folder", name: "root", files: data };
 }
 
 async function ScanDir(path) {
-    console.log("Scanning", path);
-
     const output = [];
     const everything = await fsPromises.readdir(path, { withFileTypes: true });
 
