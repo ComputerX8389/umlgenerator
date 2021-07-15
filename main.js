@@ -1,10 +1,61 @@
 // Modules to control application life and create native browser window
-const { app, BrowserWindow, ipcMain } = require("electron");
+const { app, BrowserWindow, Menu, shell, dialog } = require("electron");
 const path = require("path");
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let win;
+const isMac = process.platform === "darwin";
+
+const template = [
+    // { role: 'fileMenu' }
+    {
+        label: "File",
+        submenu: [
+            isMac ? { role: "close" } : { role: "quit" },
+            {
+                label: "Open Folder",
+                click: async () => {
+                    const folder = await dialog.showOpenDialog({
+                        properties: ["openDirectory"],
+                    });
+
+                    console.log("Folder selected", folder);
+                    win.webContents.send("ping", folder);
+                },
+            },
+        ],
+    },
+    // { role: 'viewMenu' }
+    {
+        label: "View",
+        submenu: [
+            { role: "reload" },
+            { role: "forceReload" },
+            { role: "toggleDevTools" },
+            { type: "separator" },
+            { role: "resetZoom" },
+            { role: "zoomIn" },
+            { role: "zoomOut" },
+            { type: "separator" },
+            { role: "togglefullscreen" },
+        ],
+    },
+    {
+        role: "help",
+        submenu: [
+            {
+                label: "Learn More",
+                click: async () => {
+                    await shell.openExternal("https://electronjs.org");
+                },
+            },
+        ],
+    },
+];
+
+const menu = Menu.buildFromTemplate(template);
+Menu.setApplicationMenu(menu);
 
 function createWindow() {
     // Create the browser window.
@@ -14,13 +65,14 @@ function createWindow() {
         webPreferences: {
             preload: path.join(__dirname, "src/preload.js"),
         },
+        backgroundColor: "#1b1b1b",
     });
 
     // and load the index.html of the app.
     win.loadFile("src/index.html");
 
     // Open the DevTools.
-    win.webContents.openDevTools();
+    // win.webContents.openDevTools();
 }
 
 // This method will be called when Electron has finished

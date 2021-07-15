@@ -4,21 +4,39 @@
 // `nodeIntegration` is turned off. Use `preload.js` to
 // selectively enable features needed in the rendering
 // process.
+
 const diagram = new go.Diagram("Diagram");
 const $ = go.GraphObject.make;
+console.log("api", window.api);
 
 const scanner = window.api.scanner;
 const PathTxt = document.getElementById("PathTxt");
-const ScanBtn = document.getElementById("ScanBtn");
 
-ScanBtn.addEventListener("click", StartScan);
+const lastPath = localStorage.getItem("path");
+PathTxt.value = lastPath;
 
-async function StartScan() {
-    const data = await scanner.GetUML(PathTxt.value);
+window.api.receive("ping", (data) => {
+    console.log(`Received from main process`, data);
+    if (data.canceled == false) {
+        StartScan(data.filePaths[0]);
+    } else {
+        alert("Not a valid folder");
+    }
+});
 
-    setupTree(data);
-    // automatic tree layout
-    diagram.layout = $(go.TreeLayout, { angle: 0 });
+async function StartScan(newpath) {
+    PathTxt.value = newpath;
+    localStorage.setItem("path", newpath);
+
+    const data = await scanner.GetUML(newpath);
+
+    if (data) {
+        setupTree(data);
+        // automatic tree layout
+        diagram.layout = $(go.TreeLayout, { angle: 0 });
+    } else {
+        alert("nope");
+    }
 }
 
 function setupTree(nodeDataArray) {
@@ -36,4 +54,11 @@ function setupTree(nodeDataArray) {
     );
 
     diagram.model = new go.TreeModel(nodeDataArray);
+}
+
+if (scanner.VaildFolder(lastPath)) {
+    console.log("Loading last path");
+    StartScan(lastPath);
+} else {
+    console.log("Last path not valid");
 }

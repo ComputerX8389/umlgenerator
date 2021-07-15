@@ -1,11 +1,22 @@
 const files = require("./files.js");
 const convertor = require("./convertor.js");
+const fs = require("fs");
 
 async function GetUML(path) {
-    const data = await files.GetFileTree(path);
-    return convertor.ConvertFileTreeToGraph(data);
+    if (fs.existsSync(path)) {
+        const data = await files.GetFileTree(path);
+
+        return convertor.ConvertFileTreeToGraph(data);
+    } else {
+        return null;
+    }
+}
+
+function VaildFolder(path) {
+    return fs.existsSync(path);
 }
 
 module.exports = {
     GetUML,
+    VaildFolder,
 };

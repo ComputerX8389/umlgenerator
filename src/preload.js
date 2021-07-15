@@ -1,6 +1,6 @@
 // All of the Node.js APIs are available in the preload process.
 // It has the same sandbox as a Chrome extension.
-const { contextBridge } = require("electron");
+const { contextBridge, ipcRenderer } = require("electron");
 
 const scanner = require("./scanner/scanner");
 
@@ -15,4 +15,13 @@ window.addEventListener("DOMContentLoaded", () => {
     }
 });
 
-contextBridge.exposeInMainWorld("api", { scanner });
+ipcRenderer.on("ping", function (event, message) {
+    console.log(message); // Prints "whoooooooh!"
+});
+
+contextBridge.exposeInMainWorld("api", {
+    scanner,
+    receive: (channel, func) => {
+        ipcRenderer.on(channel, (event, ...args) => func(...args));
+    },
+});
