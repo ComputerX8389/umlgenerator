@@ -1,23 +1,24 @@
 {
-  "name": "electron-quick-start",
-  "version": "1.0.0",
-  "description": "A minimal Electron application",
-  "main": "main.js",
-  "scripts": {
-    "start": "electron ."
-  },
-  "repository": "https://github.com/electron/electron-quick-start",
-  "keywords": [
-    "Electron",
-    "quick",
-    "start",
-    "tutorial",
-    "demo"
-  ],
-  "author": "GitHub",
-  "license": "CC0-1.0",
-  "devDependencies": {
-    "electron": "^13.1.5"
-  },
-  "dependencies": {}
+    "name": "UML generator",
+    "version": "1.0.0",
+    "description": "UML generator",
+    "main": "main.js",
+    "scripts": {
+        "start": "electron ."
+    },
+    "repository": "https://github.com/ComputerX8389/umlgenerator",
+    "keywords": [
+        "Electron",
+        "UML",
+        "generator"
+    ],
+    "author": "Tobias Steffensen",
+    "license": "CC0-1.0",
+    "devDependencies": {
+        "babel-preset-es2015": "^6.24.1",
+        "electron": "^13.1.5"
+    },
+    "dependencies": {
+        "acorn": "^8.4.1"
+    }
 }

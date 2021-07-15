@@ -97,3 +97,13 @@ app.on("window-all-closed", function () {
 
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and require them here.
+
+const acorn = require("acorn");
+const fs = require("fs");
+
+const source = fs.readFileSync(
+    "C:\\Users\\STEFF\\Desktop\\forzasite\\helpers.js",
+    "utf8"
+);
+const parsed = acorn.parse(source);
+console.log("parse", parsed);
