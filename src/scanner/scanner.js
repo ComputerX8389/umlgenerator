@@ -6,7 +6,7 @@ async function GetUML(path) {
     if (fs.existsSync(path)) {
         const data = await files.GetFileTree(path);
 
-        return convertor.ConvertFileTreeToGraph(data);
+        return { type: "tree", data: convertor.ConvertFileTreeToGraph(data) };
     } else {
         return null;
     }

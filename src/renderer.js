@@ -28,14 +28,16 @@ async function StartScan(newpath) {
     PathTxt.value = newpath;
     localStorage.setItem("path", newpath);
 
-    const data = await scanner.GetUML(newpath);
+    const scan = await scanner.GetUML(newpath);
 
-    if (data) {
-        setupTree(data);
-        // automatic tree layout
-        diagram.layout = $(go.TreeLayout, { angle: 0 });
+    if (scan) {
+        if (scan.type == "tree") {
+            // automatic tree layout
+            setupTree(scan.data);
+            diagram.layout = $(go.TreeLayout, { angle: 0 });
+        }
     } else {
-        alert("nope");
+        alert("Something went wrong");
     }
 }
 
