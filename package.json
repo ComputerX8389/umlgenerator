@@ -1,5 +1,5 @@
 {
-    "name": "UML generator",
+    "name": "umlgenerator",
     "version": "1.0.0",
     "description": "UML generator",
     "main": "main.js",
