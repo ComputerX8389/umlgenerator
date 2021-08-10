@@ -99,11 +99,12 @@ app.on("window-all-closed", function () {
 // code. You can also put them in separate files and require them here.
 
 const acorn = require("acorn");
+const jsparser = require("./src/scanner/jsparser.js");
+const Interpreter = jsparser.Interpreter;
+const Visitor = jsparser.Visitor;
 const fs = require("fs");
 
-const source = fs.readFileSync(
-    "C:\\Users\\STEFF\\Desktop\\forzasite\\helpers.js",
-    "utf8"
-);
-const parsed = acorn.parse(source);
-console.log("parse", parsed);
+const buffer = fs.readFileSync("test.js").toString();
+const jsInterpreter = new Interpreter(new Visitor());
+const body = acorn.parse(buffer).body;
+jsInterpreter.interpret(body);
